@@ -13,6 +13,7 @@
         <div class="nav-item" (click)="onCartClick()">
             <i class="fas fa-shopping-cart"></i>
             <span>Cart</span>
+            <span class="cart-count" *ngIf="cartCount > 0">{{cartCount}}</span>
         </div>
     </div>
 </header>
