@@ -1,0 +1,58 @@
+name: Deploy Flipkart Clone
+
+on:
+  push:
+    branches:
+      - main
+
+# Add permissions block at workflow level
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  backup-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Create backup
+        run: |
+          timestamp=$(date +%Y%m%d_%H%M%S)
+          mkdir -p backup_$timestamp
+          cp -r src backup_$timestamp/
+          cp -r .editorconfig backup_$timestamp/
+          cp -r angular.json backup_$timestamp/
+          cp -r package.json backup_$timestamp/
+          cp -r tsconfig*.json backup_$timestamp/
+          
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build project
+        run: npm run build --prod
+
+      - name: Wait for approval
+        uses: trstringer/manual-approval@v1
+        with:
+          secret: ${{ secrets.GITHUB_TOKEN }}
+          approvers: manoj-40119
+          minimum-approvals: 1
+          issue-title: "Deployment approval needed"
+          issue-body: "Please review and approve the deployment"
+          
+      - name: Deploy to production
+        if: success()
+        run: |
+          # Add your deployment commands here
+          echo "Deploying to production..."
+          # Example: deploy to GitHub Pages
+          # npm run deploy 
