@@ -13,15 +13,28 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Create backup
+      - name: Create and push backup
         run: |
+          # Create backup directory
           timestamp=$(date +%Y%m%d_%H%M%S)
           mkdir -p backup_$timestamp
+          
+          # Copy important files
           cp -r src backup_$timestamp/
           cp -r .editorconfig backup_$timestamp/
           cp -r angular.json backup_$timestamp/
           cp -r package.json backup_$timestamp/
           cp -r tsconfig*.json backup_$timestamp/
+          
+          # Configure Git for backup branch
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          
+          # Create and push to backup branch
+          git checkout -b backup-$timestamp
+          git add backup_$timestamp/
+          git commit -m "Backup created on $timestamp"
+          git push origin backup-$timestamp
           
       - name: Setup Node.js
         uses: actions/setup-node@v2
