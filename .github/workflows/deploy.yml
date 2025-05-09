@@ -5,14 +5,8 @@ on:
     branches:
       - main
 
-# Add permissions block at workflow level
-permissions:
-  contents: write
-  issues: write
-  pull-requests: write
-
 jobs:
-  backup-and-deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
     
     steps:
@@ -39,20 +33,8 @@ jobs:
 
       - name: Build project
         run: npm run build --prod
-
-      - name: Wait for approval
-        uses: trstringer/manual-approval@v1
-        with:
-          secret: ${{ secrets.GITHUB_TOKEN }}
-          approvers: manoj-40119
-          minimum-approvals: 1
-          issue-title: "Deployment approval needed"
-          issue-body: "Please review and approve the deployment"
           
       - name: Deploy to production
-        if: success()
         run: |
-          # Add your deployment commands here
           echo "Deploying to production..."
-          # Example: deploy to GitHub Pages
-          # npm run deploy
+          # Add your deployment commands here
