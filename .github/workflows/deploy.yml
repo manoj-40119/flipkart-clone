@@ -22,6 +22,14 @@ jobs:
         cp package.json $backup_dir/
         cp tsconfig*.json $backup_dir/
         echo "Backup created in $backup_dir"
+        zip -r "$backup_dir.zip" $backup_dir
+
+    - name: Upload Backup
+      uses: actions/upload-artifact@v3
+      with:
+        name: backup-flipkart-clone
+        path: backup-flipkart-clone-*.zip
+        retention-days: 5
 
     - name: Setup Node.js
       uses: actions/setup-node@v3
