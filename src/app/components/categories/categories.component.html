@@ -1,0 +1,6 @@
+<nav class="categories">
+    <div class="category" *ngFor="let category of categories">
+        <img [src]="category.image" [alt]="category.name">
+        <span>{{ category.name }}</span>
+    </div>
+</nav>

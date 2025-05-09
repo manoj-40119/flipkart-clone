@@ -1,0 +1,18 @@
+<header>
+    <div class="header-left">
+        <div class="logo">
+            <img src="https://static-assets-web.flixcart.com/fk-p-linchpin-web/fk-cp-zion/img/flipkart-plus_8d85f4.png" alt="Flipkart">
+        </div>
+        <div class="search-bar">
+            <input type="text" placeholder="Search for products, brands and more" (input)="onSearch($event)">
+            <button><i class="fas fa-search"></i></button>
+        </div>
+    </div>
+    <div class="header-right">
+        <button class="login-btn" (click)="onLogin()">Login</button>
+        <div class="nav-item" (click)="onCartClick()">
+            <i class="fas fa-shopping-cart"></i>
+            <span>Cart</span>
+        </div>
+    </div>
+</header>
